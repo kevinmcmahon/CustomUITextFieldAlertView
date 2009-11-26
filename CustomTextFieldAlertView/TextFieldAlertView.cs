@@ -57,8 +57,7 @@ namespace CustomTextFieldAlertView
 		
 		private void AdjustControlSize()
 		{
-			float tfH = 25.0f;
-			float tfExtH = tfH + 16.0f;
+			float tfExtH = _tf.Frame.Size.Height + 16.0f;
 			
 			RectangleF frame = new RectangleF(this.Frame.X, 
 			                                  this.Frame.Y - tfExtH/2,
