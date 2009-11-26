@@ -65,5 +65,15 @@ namespace CustomTextFieldAlertView {
 				this.SetNativeField("whereLabel", value);
 			}
 		}
+		
+		[MonoTouch.Foundation.Connect("buttonPassword")]
+		private MonoTouch.UIKit.UIButton buttonPassword {
+			get {
+				return ((MonoTouch.UIKit.UIButton)(this.GetNativeField("buttonPassword")));
+			}
+			set {
+				this.SetNativeField("buttonPassword", value);
+			}
+		}
 	}
 }

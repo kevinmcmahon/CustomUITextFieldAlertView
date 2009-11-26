@@ -38,15 +38,12 @@ namespace CustomTextFieldAlertView
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			this.button.TouchDown += delegate(object sender, EventArgs e) 
-										{
-											PromptForName(HandlerToUse.Delegate);	
-										};
 			
-			this.buttonForClicked.TouchDown += delegate(object sender, EventArgs e) 
-												{
-													PromptForName(HandlerToUse.Clicked);	
-												};
+			PromptForPassword();
+			
+			this.button.TouchDown += delegate { PromptForName(HandlerToUse.Delegate); };
+			this.buttonForClicked.TouchDown += delegate { PromptForName(HandlerToUse.Clicked); };
+			this.buttonPassword.TouchDown += delegate { PromptForPassword(); };
 		}
 		
 		private void PromptForName(HandlerToUse handlerType)
@@ -59,16 +56,16 @@ namespace CustomTextFieldAlertView
 			tf.ReturnKeyType = UIReturnKeyType.Done;
 			tf.SecureTextEntry = false;  // Set this to true if you want a password-style text masking
 			
-			UIAlertView myAlertView = new UIAlertView
+			UIAlertView myAlertView = new UIAlertView()
 			{
 				Title = "Please enter your name",
-				Message = "this line is hidden"
+				Message = "this is hidden"
 			};
 			
 			myAlertView.AddButton("Cancel");
 			myAlertView.AddButton("Ok");
 			myAlertView.AddSubview(tf);
-			
+						 
 			if (handlerType == HandlerToUse.Delegate)
 			{
 				myAlertView.Delegate = new MyAlertDelegate(this);
@@ -79,7 +76,35 @@ namespace CustomTextFieldAlertView
 			}
 			
 			myAlertView.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeTranslation (0f, 110f);
+			myAlertView.Show ();
+		}
+
+		void HandleMyPasswordAlertViewClicked (object sender, UIButtonEventArgs e)
+		{
+			if(e.ButtonIndex == 1)
+			{
+				string pwEntered = ((TextFieldAlertView) sender).EnteredText;
+				
+				this.SetNameLabel(string.Format("Password is {0}", pwEntered));
+				this.SetWhereLabel("via Password");
+			}
+			else
+			{
+				// Cancelled was clicked
+			}
+		}
+		
+		private void PromptForPassword()
+		{
 			
+			TextFieldAlertView myAlertView = new TextFieldAlertView(true)
+			{
+				Title = "Faux Account Password ",
+				Message = "account@example.com"
+			};
+			
+			myAlertView.Clicked += HandleMyPasswordAlertViewClicked;
+			myAlertView.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeTranslation (0f, 110f);
 			myAlertView.Show ();
 		}
 
@@ -87,9 +112,9 @@ namespace CustomTextFieldAlertView
 		{
 			if(e.ButtonIndex == 1)
 			{
-				string nameEntered = ((UIAlertView) sender).Subviews.OfType<UITextField>().Single().Text;
+				string nameEntered = ((TextFieldAlertView) sender).EnteredText;
 				
-				this.SetNameGreeting(nameEntered);
+				this.SetNameLabel(string.Format("Hello {0}!", nameEntered));
 				this.SetWhereLabel("via Clicked");
 			}
 			else
@@ -98,9 +123,9 @@ namespace CustomTextFieldAlertView
 			}
 		}
 		
-		public void SetNameGreeting(string name)
+		public void SetNameLabel(string name)
 		{
-			this.nameLabel.Text = string.Format("Hello {0}!", name);
+			this.nameLabel.Text = name;
 		}
 		
 		public void SetWhereLabel(string whereFrom)
@@ -108,6 +133,7 @@ namespace CustomTextFieldAlertView
 			this.whereLabel.Text = whereFrom;
 		}
 	}
+	
 	public enum HandlerToUse
 	{
 		Delegate,
@@ -127,9 +153,9 @@ namespace CustomTextFieldAlertView
 		{
 			if (buttonIndex == 1)
 			{
-				string nameEntered = alertview.Subviews.OfType<UITextField>().Single().Text;
+				string nameEntered = ((TextFieldAlertView) alertview).EnteredText;
 				
-				viewController.SetNameGreeting(nameEntered);
+				viewController.SetNameLabel(nameEntered);
 				viewController.SetWhereLabel("via Delegate");
 			}
 			else

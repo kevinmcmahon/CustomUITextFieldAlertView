@@ -73,6 +73,7 @@
     <Compile Include="RootView.xib.designer.cs">
       <DependentUpon>RootView.xib</DependentUpon>
     </Compile>
+    <Compile Include="TextFieldAlertView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="RootView.xib" />
