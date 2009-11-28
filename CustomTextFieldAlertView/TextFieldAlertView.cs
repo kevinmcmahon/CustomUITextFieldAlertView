@@ -27,6 +27,7 @@ namespace CustomTextFieldAlertView
 			_secureTextEntry = secureTextEntry;
 			this.AddButton("Cancel");
 			this.AddButton("Ok");
+			// shift the control up so the keyboard won't hide the control when activated.
 			this.Transform = MonoTouch.CoreGraphics.CGAffineTransform.MakeTranslation(0f, 110f);
 		}
 		
@@ -34,12 +35,16 @@ namespace CustomTextFieldAlertView
 		
 		public override void LayoutSubviews ()
 		{
+			// layout the stock UIAlertView control
 			base.LayoutSubviews ();
 			
+			// build out the text field
 			_tf = ComposeTextFieldControl(_secureTextEntry);
 			
+			// add the text field to the alert view
 			this.AddSubview(_tf);
 			
+			// shift the contents of the alert view around to accomodate the extra text field
 			AdjustControlSize();
 		}
 

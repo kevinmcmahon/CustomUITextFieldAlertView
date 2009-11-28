@@ -39,8 +39,6 @@ namespace CustomTextFieldAlertView
 		{
 			base.ViewDidLoad ();
 			
-			PromptForPassword();
-			
 			this.button.TouchDown += delegate { PromptForName(HandlerToUse.Delegate); };
 			this.buttonForClicked.TouchDown += delegate { PromptForName(HandlerToUse.Clicked); };
 			this.buttonPassword.TouchDown += delegate { PromptForPassword(); };
@@ -112,7 +110,7 @@ namespace CustomTextFieldAlertView
 		{
 			if(e.ButtonIndex == 1)
 			{
-				string nameEntered = ((TextFieldAlertView) sender).EnteredText;
+				string nameEntered = ((UIAlertView) sender).Subviews.OfType<UITextField>().Single().Text;
 				
 				this.SetNameLabel(string.Format("Hello {0}!", nameEntered));
 				this.SetWhereLabel("via Clicked");
@@ -153,7 +151,7 @@ namespace CustomTextFieldAlertView
 		{
 			if (buttonIndex == 1)
 			{
-				string nameEntered = ((TextFieldAlertView) alertview).EnteredText;
+				string nameEntered = alertview.Subviews.OfType<UITextField>().Single().Text;
 				
 				viewController.SetNameLabel(nameEntered);
 				viewController.SetWhereLabel("via Delegate");
